@@ -35,7 +35,7 @@ namespace AlarmGUI
             string sqlGetAlarm = "SELECT TOP 1 AlarmID, TriggerValue, TimeStamp FROM Alarm WHERE Acknowledged = 0 ORDER BY TimeStamp ASC";
 
             // Hent alarm grenser
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connectionString))        //Code for connecting to database and extracting the alarm limits was suggested by Claude ai
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(alarmsql, conn);
@@ -50,7 +50,7 @@ namespace AlarmGUI
             alarmlimitltxt.Text = alarmLowLimit.ToString();
 
             // Hent siste measurement
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connectionString))        //Code for connecting to database and extracting the latest measurement was suggested by Claude ai
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(measurementsql, conn);
@@ -70,7 +70,7 @@ namespace AlarmGUI
             if (Temperature > alarmHighLimit)
             {
                 string sqlInsert = $"INSERT INTO Alarm (AlarmLimitID, TriggerValue, TimeStamp, Acknowledged,) VALUES (1, {Temperature}, GETDATE(), 0)";
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (SqlConnection conn = new SqlConnection(connectionString))        //Code for connecting to database and inserting new alarm was suggested by Claude ai    
                 {
                     conn.Open();
                     new SqlCommand(sqlInsert, conn).ExecuteNonQuery();
@@ -79,7 +79,7 @@ namespace AlarmGUI
             else if (Temperature < alarmLowLimit)
             {
                 string sqlInsert = $"INSERT INTO Alarm (AlarmLimitID, TriggerValue, TimeStamp, Acknowledged) VALUES (1, {Temperature}, GETDATE(), 0)";
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (SqlConnection conn = new SqlConnection(connectionString))        //Code for connecting to database and inserting new alarm was suggested by Claude ai
                 {
                     conn.Open();
                     new SqlCommand(sqlInsert, conn).ExecuteNonQuery();
@@ -87,7 +87,7 @@ namespace AlarmGUI
             }
 
             // Vis eldste uacknowledgede alarm
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connectionString))            //Code for connecting to database and extracting the oldest unacknowledged alarm was suggested by Claude ai
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(sqlGetAlarm, conn);
@@ -136,7 +136,7 @@ namespace AlarmGUI
         private void ackAlarmbtn_Click(object sender, EventArgs e)
         {
             string sqlAck = "UPDATE Alarm SET Acknowledged = 1 WHERE AlarmID = (SELECT TOP 1 AlarmID FROM Alarm WHERE Acknowledged = 0 ORDER BY TimeStamp ASC)";
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connectionString))            //Code for connecting to database and acknowledging the oldest unacknowledged alarm was suggested by Claude ai
             {
                 conn.Open();
                 new SqlCommand(sqlAck, conn).ExecuteNonQuery();
