@@ -69,7 +69,7 @@ namespace AlarmGUI
             // Sjekk og insert alarm
             if (Temperature > alarmHighLimit)
             {
-                string sqlInsert = $"INSERT INTO Alarm (AlarmLimitID, TriggerValue, TimeStamp, Acknowledged,) VALUES (1, {Temperature}, GETDATE(), 0)";
+                string sqlInsert = $"INSERT INTO Alarm (AlarmLimitID, TriggerValue, TimeStamp, Acknowledged) VALUES (1, {Temperature}, GETDATE(), 0)";
                 using (SqlConnection conn = new SqlConnection(connectionString))        //Code for connecting to database and inserting new alarm was suggested by Claude ai    
                 {
                     conn.Open();
